@@ -1,105 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
+using Library_Tools.Enums;
 
 namespace Library_Tools
 {
     public class Book
     {
         public string name { get; set; }
-        public string janr { get; set; }
+        public string level { get; set; }
         public int page { get; set; }
 
-        public Book(string name, string janr, int page)
+        public Book(string name, string level, int page)
         {
             this.name = name;
-            this.janr = janr;
+            this.level = level;
             this.page = page;
         }
-
-
     }
     public class Library
     {
-        List<Book> library = new List<Book>()
+        List<Book> library = new List<Book>();
+        public string[] PrintIndex(int x)
         {
-            new Book("name", "janr", 14),
-            new Book("name1", "janr1", 4543),
-            new Book("name2", "janr2", 4),
-            new Book("name3", "janr3", 432),
-            new Book("name4", "janr4", 20)
-        };
-
-
-        public void Print(int x)
-        {
+            string[] resault = new string[3];
             for (int i = 0; i < library.Count; i++)
             {
-                if (i==x)
+                if (i == x)
                 {
-                    Console.WriteLine(library[x].name);
-                    Console.WriteLine(library[x].janr);
-                    Console.WriteLine(library[x].page);
+                    resault[0] = library[i].name.Replace('_', ' ');
+                    resault[1] = library[i].level;
+                    resault[2] = library[i].page.ToString();
+                    break;
+                }
+                else
+                {
+                    resault[0] = "Sorry,";
+                    resault[1] = "I can't search";
+                    resault[2] = $"the book <{x}>((";
                 }
             }
+            return resault;
         }
-        public void PrintName(string x)
+        public string[] PrintName(string x)
         {
+            string[] resault = new string[3];
             for (int i = 0; i < library.Count; i++)
             {
                 if (library[i].name == x)
                 {
-                    Console.WriteLine(library[i].name);
-                    Console.WriteLine(library[i].janr);
-                    Console.WriteLine(library[i].page);
-                    return;
+                    resault[0] = library[i].name.Replace('_', ' ');
+                    resault[1] = library[i].level;
+                    resault[2] = library[i].page.ToString();
+                    break;
                 }
-            }
-            Console.WriteLine("sorry");
-        }
-        
-
-        //public List<Book> Tolstaja(this List<Book> library)
-        //{
-        //    var b = 0;
-        //    for (int i = 1; i < library.Count; i++)
-        //    {
-        //        if (library[i].page > library[i-1].page )
-        //        {
-        //            if (library[i].page > library[library.Count-1].page)
-        //            {
-        //                b = library[i].page;
-        //            }
-        //            b = i;
-        //        }
-        //    }
-        //    library.Insert(0, library[b]);
-        //    return library;
-        //}
-
-
-
-    }
-    public static class Tut
-    {
-        public static List<Book> Tolstaja(this List<Book> library)
-        {
-            var b = 0;
-            for (int i = 1;i < library.Count;i++)
-            {
-                if (library[i-1].page<library[i].page)
+                else
                 {
-                    if (library[b].page < library[i].page)
-                    {
-                        b = i;
-                    }
+                    resault[0] = "Sorry,";
+                    resault[1] = "I can't search";
+                    resault[2] = $"the book <{x}>((";
                 }
             }
-            
-            library.Insert(0, library[b]);
-            library.RemoveAt(b+1);
-            return library;
+            return resault;
+        }
+        public void AddToList()
+        {
+            string level = "A0";
+            Random random = new Random();
+            var countElementA0 = Enum.GetNames(typeof(BooksA0)).Length;
+            var countElementA1 = Enum.GetNames(typeof(BooksA1)).Length;
+            var countElementA2 = Enum.GetNames(typeof(BooksA2)).Length;
+            var countElementB1 = Enum.GetNames(typeof(BooksB1)).Length;
+            var countElementB2 = Enum.GetNames(typeof(BooksB2)).Length;
+            var countElementC1 = Enum.GetNames(typeof(BooksC1)).Length;
+            int generalCount = countElementA0 + countElementA1 + countElementA2 + countElementB1 + countElementB2 + countElementC1;
+
+            for (int i = 0; i < Enum.GetNames(typeof(BooksA0)).Length; i++)
+            {
+                library.Add(new Book(Enum.GetName(typeof(BooksA0), i), level, random.Next(1, 1000)));
+            }
+            level = "A1";
+            for (int i = 0; i < Enum.GetNames(typeof(BooksA1)).Length; i++)
+            {
+                library.Add(new Book(Enum.GetName(typeof(BooksA1), i), level, random.Next(1, 1000)));
+            }
+            level = "A2";
+            for (int i = 0; i < Enum.GetNames(typeof(BooksA2)).Length; i++)
+            {
+                library.Add(new Book(Enum.GetName(typeof(BooksA2), i), level, random.Next(1, 1000)));
+            }
+            level = "B1";
+            for (int i = 0; i < Enum.GetNames(typeof(BooksB1)).Length; i++)
+            {
+                library.Add(new Book(Enum.GetName(typeof(BooksB1), i), level, random.Next(1, 1000)));
+            }
+            level = "B2";
+            for (int i = 0; i < Enum.GetNames(typeof(BooksB2)).Length; i++)
+            {
+                library.Add(new Book(Enum.GetName(typeof(BooksB2), i), level, random.Next(1, 1000)));
+            }
+            level = "C1";
+            for (int i = 0; i < Enum.GetNames(typeof(BooksC1)).Length; i++)
+            {
+                library.Add(new Book(Enum.GetName(typeof(BooksC1), i), level, random.Next(1, 1000)));
+            }
+        }
+        public void PrintAllBook()
+        {
+            for (int i = 0; i < library.Count; i++)
+            {
+                Console.WriteLine($"name is: <{library[i].name.Replace('_', ' ')}>, "+
+                     $"level is: <{library[i].level}>, "+ 
+                     $"pages are: <{library[i].page}>.");
+            }
         }
     }
-    
-
 }
